@@ -1,2 +1,2 @@
-# PL3_r2p2 Autor: Pablo Largo Rubio
-Práctica 3 de laboratorio de la asignatura Planificación Automática.
+# PL3_r2p2 Planificación Automática
+Autor: Pablo Largo Rubio
