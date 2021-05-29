@@ -1,34 +1,6 @@
-""" This module implements the A* path planning algorithm.
+""" This module implements the Theta* path planning algorithm.
 
 Two variants are included: grid-based, and mesh-based.
-
-This program is free software: you can redistribute it and/or modify it under
-the terms of the GNU General Public License as published by the Free Software
-Foundation, either version 3 of the License, or (at your option) any later
-version.
-This program is distributed in the hope that it will be useful, but WITHOUT
-ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
-You should have received a copy of the GNU General Public License along with
-this program. If not, see <http://www.gnu.org/licenses/>.
-"""
-
-__author__ = "Mario Cobos Maestre"
-__authors__ = ["Mario Cobos Maestre"]
-__contact__ = "mario.cobos@edu.uah.es"
-__copyright__ = "Copyright 2019, UAH"
-__credits__ = ["Mario Cobos Maestre"]
-__date__ = "2019/03/29"
-__deprecated__ = False
-__email__ =  "mario.cobos@edu.uah.es"
-__license__ = "GPLv3"
-__maintainer__ = "Mario Cobos Maestre"
-__status__ = "Development"
-__version__ = "0.0.1"
-
-
-"""
-    Code modified from https://gist.github.com/jamiees2/5531924
 """
 
 import path_planning as pp
@@ -81,9 +53,58 @@ def children(point,grid):
                      [(x+1, y), (x,y + 1), (x+1, y+1)]]
     return [link for link in links if link.value != 9]
 
-def aStar(start, goal, grid, heur):
+def checkObst(nodo, grid):   
+	x = nodo[0]   
+	y = nodo[1]
+	return (grid[int(x)][int(y)].value >= 5)
+
+def lineOfSight(parent, node, grid):
+    x0,y0 = parent.grid_point
+    x1,y1 = node.grid_point
+    dy = y1 - y0
+    dx = x1 - x0
+    f = 0
+    if dy < 0:
+        dy = -dy
+        sy = -1
+    else:
+        sy = 1
+    if dx < 0:
+	    dx = -dx
+	    sx = -1
+    else:
+	    sx = 1
+    if dx >= dy:
+	    while x0 != x1:
+		    f = f + dy
+		    if f >= dx:
+			    if checkObst((x0 + ((sx - 1)/2), y0 + ((sy - 1)/2)), grid):
+				    return False
+			    y0 = y0 + sy
+			    f = f - dx
+		    if f != 0 and checkObst((x0 + ((sx - 1)/2), y0 + ((sy - 1)/2)), grid):
+			    return False
+		    if dy == 0 and checkObst((x0 + ((sx - 1)/2), y0), grid) and checkObst((x0 + ((sx - 1)/2), y0 - 1), grid):
+			    return False
+		    x0 = x0 + sx
+    else:
+	    while y0 != y1:
+		    f = f + dx
+		    if f >= dy:
+			    if checkObst((x0 + ((sx - 1)/2), y0 + ((sy - 1)/2)), grid):
+				    return False
+			    x0 = x0 + sx
+			    f = f - dy
+		    if f != 0 and checkObst((x0 + ((sx - 1)/2), y0 + ((sy - 1)/2)), grid):
+			    return False
+		    if dx == 0 and checkObst((x0, y0 + ((sy - 1)/2)), grid) and checkObst((x0 - 1, y0 + ((sy - 1)/2)), grid):
+			    return False
+		    y0 = y0 + sy
+    return True
+				
+def thetaStar(start, goal, grid, heur):
     """
-        Executes the A* path planning algorithm over a given grid.
+        Executes the Theta* path planning algorithm over a given grid.
         Inputs:
             - start: node from which to start.
             - goal: node to which it is desired to arrive.
@@ -122,32 +143,36 @@ def aStar(start, goal, grid, heur):
         #Loop through the node's children/siblings
         for node in children(current,grid):
             #If it is already in the closed set, skip it
-            if node in closedset:
+            if node in closedset: 
                 continue
+            if current.parent and lineOfSight(current.parent, node, grid):
+                s = current.parent
+            else:   
+                s = current
             #Otherwise if it is already in the open set
             if node in openset:
+                new_g = s.G + s.move_cost(node)	
                 #Check if we beat the G score 
-                new_g = current.G + current.move_cost(node)
                 if node.G > new_g:
                     #If so, update the node to have a new parent
                     node.G = new_g
-                    node.parent = current
+                    node.parent = s
             else:
                 #If it isn't in the open set, calculate the G and H score for the node
-                node.G = current.G + current.move_cost(node)
+                node.G = s.G + s.move_cost(node)
                 node.H = pp.heuristic[heur](node, goal)
                 #Set the parent to our current item
-                node.parent = current
+                node.parent = s
                 #Add it to the set
                 openset.add(node)
     #Throw an exception if there is no path
     raise ValueError('No Path Found')
 
-pp.register_search_method('A*', aStar)
+pp.register_search_method('Theta*', thetaStar)
 
-def aStar_mesh(start, goal, grid, heur):
+def thetaStar_mesh(start, goal, grid, heur):
     """
-        Executes the A* path planning algorithm over a given nav mesh.
+        Executes the Theta* path planning algorithm over a given nav mesh.
         Inputs:
             - start: node from which to start.
             - goal: node to which it is desired to arrive.
@@ -186,25 +211,29 @@ def aStar_mesh(start, goal, grid, heur):
         #Loop through the node's children/siblings
         for node in current.neighbors.values():
             #If it is already in the closed set, skip it
-            if node in closedset:
+            if node in closedset: 
                 continue
+            if current.parent and lineOfSight(current.parent, node, grid):
+                s = current.parent
+            else:   
+                s = current
             #Otherwise if it is already in the open set
             if node in openset:
+                new_g = s.G + s.move_cost(node)	
                 #Check if we beat the G score 
-                new_g = current.G + current.move_cost(node)
                 if node.G > new_g:
                     #If so, update the node to have a new parent
                     node.G = new_g
-                    node.parent = current
+                    node.parent = s
             else:
                 #If it isn't in the open set, calculate the G and H score for the node
-                node.G = current.G + current.move_cost(node)
+                node.G = s.G + s.move_cost(node)
                 node.H = pp.heuristic[heur](node, goal)
                 #Set the parent to our current item
-                node.parent = current
+                node.parent = s
                 #Add it to the set
                 openset.add(node)
     #Throw an exception if there is no path
     raise ValueError('No Path Found')
 
-pp.register_search_method('A* mesh', aStar_mesh)
+pp.register_search_method('Theta* mesh', thetaStar_mesh)
