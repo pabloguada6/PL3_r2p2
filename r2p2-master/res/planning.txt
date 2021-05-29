@@ -1,78 +1,12 @@
-These are just test lines.
-
-They should not break the program
-At all
-
-% But better safe than sorry
-
-% 0.000: ( crash )
-
-% Let's see what happens
-
-
-
-(move r p0515 p3030)
-
-10: (recharge_batteries )
-
-11: (recharge_batteries )
-
-12: (recharge_batteries )
-
-11: (move r p3030 p2025)
-
-13: (take_picture )
-
-14: (recharge_batteries )
-
-15: (recharge_batteries )
-
-17: (move r p2025 p1010)
-
-16: (take_picture )
-
-10: (recharge_batteries )
-
-11: (recharge_batteries )
-
-12: (recharge_batteries )
-
-13: (recharge_batteries )
-
-14: (recharge_batteries )
-
-15: (recharge_batteries )
-
-10: (recharge_batteries )
-
-11: (recharge_batteries )
-
-12: (recharge_batteries )
-
-13: (recharge_batteries )
-
-14: (recharge_batteries )
-
-15: (recharge_batteries )
-
-10: (recharge_batteries )
-
-11: (recharge_batteries )
-
-12: (recharge_batteries )
-
-13: (recharge_batteries )
-
-14: (recharge_batteries )
-
-15: (recharge_batteries )
-
-21: (move r p2020 p2530)
-
-22: (get_co2_reading )
-
-21: (move r p2530 p3010)
-
-23: (drill)
-
-22: (take_picture )
+(move r P0505 P0606)
+0.001: (move CURIOSITY P0006 P2507) [26.0000]
+26.002: (RECHARGE_BATTERY CURIOSITY) [9.6000]
+26.003: (TAKE_PICTURE CURIOSITY P2507) [6.0000]
+32.004: (move CURIOSITY P2507 P1105) [16.0000]
+48.005: (DRILL CURIOSITY P1105) [10.0000]
+58.006: (move CURIOSITY P1105 P2129) [35.0000]
+93.007: (RECHARGE_BATTERY CURIOSITY) [8.3000]
+93.008: (DRILL CURIOSITY P2129) [10.0000]
+103.009: (ANALYSE_SAMPLES CURIOSITY P2129) [14.0000]
+117.010: (move CURIOSITY P2129 P1430) [8.0000]
+125.011: (EARTH_COMMUNICATION CURIOSITY P1430) [18.0000]
