@@ -16,7 +16,7 @@ Los ficheros .pddl correspondientes al dominio y el problema, se encuentran fuer
 ## What else?
 Para poder controlar de manera autónoma faltan por implementar diversas partes, y entre ella se encuentra el aprendizaje automático o machine learning (relacionado con la IA). Es un punto vital, que permitirá al robot optimizar su trabajo teniendo en cuenta las tareas que ha realizado anteriormente. De esta forma, los planes y los caminos generados para el robot, tendrán en cuenta los hábitos a los que el robot es sometido y podrá predecir acciones siendo, de esta forma, mucho más autónomo e inteligente.
 
-Tambiénj sería necesario desarrollar una interfaz gráfica para tener la posibilidad de indicar las tareas que queremos que el robot lleve a cabo. En base a las tareas requeridas, el planificador generará el plan más óptimo y con ello se podrá generar el camino más óptimo con los distintos algoritmos y heurísticas que ya están desarrolladas.
+También sería necesario desarrollar una interfaz gráfica para tener la posibilidad de indicar las tareas que queremos que el robot lleve a cabo. En base a las tareas requeridas, el planificador generará el plan más óptimo y con ello se podrá generar el camino más óptimo con los distintos algoritmos y heurísticas que ya están desarrolladas.
 
 Además, también falta programar un sistema de "re-planning" para realizar y ejecutar un nuevo plan en caso de que algo vaya como no se esperaba en el plan original.
 
