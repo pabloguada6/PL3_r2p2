@@ -22,5 +22,5 @@ Además, también falta programar un sistema de "re-planning" para realizar y ej
 
 Otro posible factor a implementar, sería programar al robot para que en caso de encontrarse atascado en una situación en la que no pueda continuar, pida ayuda a los seres humanos mediante correo electrónico o mediante voz para los seres humanos que estén alrededor. De esta forma, el robot podrá ser totalmente autonómo, pidiendo ayuda en caso de que se encuentre ante un problema, como un ser humano podría hacer en su caso.
 
-El resto de factores comoel planificador, el generador de caminos o la reacción ante los elementos del ambiente en que se encuentra (detecta obstáculos) ya están implementados en esta práctica.
+El resto de factores como el planificador, el generador de caminos o la reacción ante los elementos del ambiente en que se encuentra (detecta obstáculos) ya están implementados en esta práctica.
 
